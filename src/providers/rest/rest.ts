@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
@@ -13,21 +13,25 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class RestProvider {
 
-  private apiUrl = 'https://restcountries.eu/rest/v2/all';
+  //private apiUrl = 'https://restcountries.eu/rest/v2/all';
+  private imgurUrl = 'https://api.imgur.com/3/gallery/top';
 
   constructor(public http: HttpClient) {
     console.log('Hello RestProvider Provider');
   }
 
   getCountries(): Observable<string[]> {
-    return this.http.get(this.apiUrl)
+    let headers = new HttpHeaders();
+    headers = headers.set("Authorization", "Client-ID 226919d0cce54d5");
+
+    return this.http.get(this.imgurUrl, {headers: headers})
                     .map(this.extractData)
                     .catch(this.handleError);
   }
 
   private extractData(res: Response) {
     let body = res;
-    return body || { };
+    return body.data || { };
   }
 
   private handleError (error: Response | any) {
@@ -38,6 +42,7 @@ export class RestProvider {
     } else {
       errMsg = error.message ? error.message : error.toString();
     }
+    console.log(error)
     console.error(errMsg);
     return Observable.throw(errMsg);
   }

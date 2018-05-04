@@ -6,6 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { ListPage } from '../pages/list/list';
+import { ImgurPage } from '../pages/imgur/imgur';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -15,7 +16,8 @@ import { RestProvider } from '../providers/rest/rest';
   declarations: [
     MyApp,
     HomePage,
-    ListPage
+    ListPage,
+    ImgurPage
   ],
   imports: [
     BrowserModule,
@@ -26,7 +28,8 @@ import { RestProvider } from '../providers/rest/rest';
   entryComponents: [
     MyApp,
     HomePage,
-    ListPage
+    ListPage,
+    ImgurPage
   ],
   providers: [
     StatusBar,

@@ -3,11 +3,11 @@ import { NavController } from 'ionic-angular';
 import { RestProvider } from '../../providers/rest/rest';
 
 @Component({
-  selector: 'page-home',
-  templateUrl: 'home.html'
+  selector: 'page-imgur',
+  templateUrl: 'imgur.html'
 })
 
-export class HomePage {
+export class ImgurPage {
 
   countries: string[];
   errorMessage: string;
@@ -23,7 +23,10 @@ export class HomePage {
   getCountries() {
     this.rest.getCountries()
        .subscribe(
-         countries => this.countries = countries,
+         countries => {
+           this.countries = countries;
+           console.log(countries);
+         },
          error =>  this.errorMessage = <any>error);
   }
 
