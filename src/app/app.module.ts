@@ -10,7 +10,7 @@ import { ImgurPage } from '../pages/imgur/imgur';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { RestProvider } from '../providers/rest/rest';
+import { ImgurProvider } from '../providers/rest/imgurRest';
 
 @NgModule({
   declarations: [
@@ -35,7 +35,7 @@ import { RestProvider } from '../providers/rest/rest';
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    RestProvider
+    ImgurProvider
   ]
 })
 export class AppModule {}

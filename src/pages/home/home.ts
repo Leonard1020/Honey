@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
-import { RestProvider } from '../../providers/rest/rest';
+import { ImgurProvider } from '../../providers/rest/imgurRest';
 
 @Component({
   selector: 'page-home',
@@ -9,21 +9,21 @@ import { RestProvider } from '../../providers/rest/rest';
 
 export class HomePage {
 
-  countries: string[];
+  posts: string[];
   errorMessage: string;
 
-  constructor(public navCtrl: NavController, public rest: RestProvider) {
+  constructor(public navCtrl: NavController, public imgur: ImgurProvider) {
 
   }
 
   ionViewDidLoad() {
-    this.getCountries();
+    this.getPosts();
   }
 
-  getCountries() {
-    this.rest.getCountries()
+  getPosts() {
+    this.imgur.getHotPosts()
        .subscribe(
-         countries => this.countries = countries,
+         posts => this.posts = posts,
          error =>  this.errorMessage = <any>error);
   }
 
