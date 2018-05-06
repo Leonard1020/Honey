@@ -21,7 +21,7 @@ export class ImgurPage {
   }
 
   getPosts() {
-    this.imgur.getHotPosts()
+    this.imgur.getSubRedditPosts("science")
        .subscribe(
          posts => this.posts = posts,
          error =>  this.errorMessage = <any>error);

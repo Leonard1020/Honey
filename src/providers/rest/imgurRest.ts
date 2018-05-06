@@ -10,13 +10,18 @@ export class ImgurProvider {
   private headers : HttpHeaders;
   private imgurUrl = 'https://api.imgur.com/3/gallery/';
 
+  private hotPosts: Observable<string[]>;
+
   constructor(public http: HttpClient) {
     this.headers = new HttpHeaders();
     this.headers = this.headers.set("Authorization", "Client-ID 226919d0cce54d5");
   }
 
   getHotPosts(): Observable<string[]> {
-    return this.sendRequest("hot");
+    if (!this.hotPosts)
+      this.hotPosts = this.sendRequest("hot");
+
+    return this.hotPosts;
   }
 
   getSubRedditPosts(tag: string): Observable<string[]> {
@@ -41,6 +46,8 @@ export class ImgurProvider {
 
   private sendRequest(path: string) {
     let url = this.imgurUrl + path;
+
+    console.log(`Pulling from ${url}`);
 
     return this.http.get(url, {headers: this.headers})
                     .map(this.extractData)

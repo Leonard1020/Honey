@@ -26,7 +26,6 @@ export class MyApp {
       { title: 'List', component: ListPage },
       { title: 'Imgur', component: ImgurPage }
     ];
-
   }
 
   initializeApp() {
