@@ -9,34 +9,35 @@
 
 <ion-content>
   <ion-card *ngFor="let p of posts">
-    <ion-card-content>
-      <ion-card-title no-padding no-margin>
+    <ion-card-content no-padding>
+      <ion-card-title padding-horizontal padding-top>
         {{p.title}}
+        <p class="date" padding-bottom>
+          {{p.datetime * 1000 | date:'medium'}}
+        </p>
       </ion-card-title>
-      <p>
-        {{p.datetime * 1000 | date:'medium'}}
-      </p>
+
       <div *ngFor="let i of p.images">
         <div *ngIf="i.type.includes('image')">
-          <img no-margin src="{{i.link}}"/>
+          <img padding-bottom src="{{i.link}}"/>
         </div>
         <div *ngIf="i.type.includes('video')">
           <video preload="auto" autoplay="autoplay" loop="loop" style='width: 100%;'>
             <source src="{{i.link}}" type="{{i.type}}">
           </video>
         </div>
-        <ion-label text-wrap>
+        <ion-label *ngIf="p.description" text-wrap padding-horizontal padding-bottom no-margin>
           {{i.description}}
         </ion-label>
       </div>
       <div *ngIf="p.type && p.type.includes('image')">
-        <img no-margin src="{{p.link}}"/>
-        <ion-label>
+        <img padding-bottom src="{{p.link}}"/>
+        <ion-label *ngIf="p.description" text-wrap padding-horizontal padding-bottom no-margin>
           {{p.description}}
         </ion-label>
       </div>
       <div *ngIf="p.images_count - (p.images ? p.images.length : 0) > 0">
-        <button ion-button>
+        <button class='loadMoreButton' ion-button no-margin margin-bottom (click)="loadMoreImages(p.id)">
           Load {{p.images_count - (p.images ? p.images.length : 0)}} more images
         </button>
       </div>

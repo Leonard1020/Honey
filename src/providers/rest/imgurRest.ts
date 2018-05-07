@@ -28,6 +28,10 @@ export class ImgurProvider {
     return this.sendRequest(`r/${tag}`);
   }
 
+  getPost(id: string): Observable<string[]> {
+    return this.sendRequest(id);
+  }
+
   private extractData(res: Response) {
     let body = res['data'];
     return body || { };

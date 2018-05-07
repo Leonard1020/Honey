@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import { ImgurProvider } from '../../providers/rest/imgurRest';
 
 @Component({
@@ -9,11 +9,19 @@ import { ImgurProvider } from '../../providers/rest/imgurRest';
 
 export class HomePage {
 
-  posts: string[];
-  errorMessage: string;
+  private tag: string;
+  private isHot: boolean;
 
-  constructor(public navCtrl: NavController, public imgur: ImgurProvider) {
+  private posts: string[];
 
+  private errorMessage: string;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, public imgur: ImgurProvider) {
+    this.tag = navParams.get('tag');
+    this.isHot = navParams.get('isHot');
+
+    if (!this.tag)
+      this.isHot = true;
   }
 
   ionViewDidLoad() {
@@ -21,10 +29,27 @@ export class HomePage {
   }
 
   getPosts() {
-    this.imgur.getHotPosts()
-       .subscribe(
-         posts => this.posts = posts,
-         error =>  this.errorMessage = <any>error);
+    if (this.isHot) {
+      this.imgur.getHotPosts()
+        .subscribe(
+          posts => this.posts = posts,
+          error =>  this.errorMessage = <any>error);
+    }
+    else {
+      this.imgur.getSubRedditPosts(this.tag)
+        .subscribe(
+          posts => this.posts = posts,
+          error => this.errorMessage = <any>error);
+    }
   }
 
+  loadMoreImages(id: string) {
+    this.imgur.getPost(id)
+      .subscribe(
+        post => {
+          let original = this.posts.find(p => p['id'] == id);
+          original['images'] = post['images'];
+        },
+        error => this.errorMessage = <any>error);
+  }
 }

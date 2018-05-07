@@ -5,8 +5,6 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
-import { ListPage } from '../pages/list/list';
-import { ImgurPage } from '../pages/imgur/imgur';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -15,9 +13,7 @@ import { ImgurProvider } from '../providers/rest/imgurRest';
 @NgModule({
   declarations: [
     MyApp,
-    HomePage,
-    ListPage,
-    ImgurPage
+    HomePage
   ],
   imports: [
     BrowserModule,
@@ -27,9 +23,7 @@ import { ImgurProvider } from '../providers/rest/imgurRest';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage,
-    ListPage,
-    ImgurPage
+    HomePage
   ],
   providers: [
     StatusBar,
