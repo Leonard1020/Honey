@@ -36,11 +36,20 @@ export class HomePage {
           error =>  this.errorMessage = <any>error);
     }
     else {
-      this.imgur.getSubRedditPosts(this.tag)
+      this.imgur.getAllPosts(this.tag)
         .subscribe(
-          posts => this.posts = posts,
+          posts => {
+            posts.sort(this.sort)
+            this.posts = posts
+          },
           error => this.errorMessage = <any>error);
     }
+  }
+
+  private sort(a: any, b: any) {
+    return (b.datetime > a.datetime)
+      ? 1
+      : ((a.datetime > b.datetime) ? -1 : 0);
   }
 
   loadMoreImages(id: string) {

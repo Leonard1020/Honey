@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 
@@ -10,22 +11,30 @@ export class ImgurProvider {
   private headers : HttpHeaders;
   private imgurUrl = 'https://api.imgur.com/3/gallery/';
 
-  private hotPosts: Observable<string[]>;
-
   constructor(public http: HttpClient) {
     this.headers = new HttpHeaders();
     this.headers = this.headers.set("Authorization", "Client-ID 226919d0cce54d5");
   }
 
   getHotPosts(): Observable<string[]> {
-    if (!this.hotPosts)
-      this.hotPosts = this.sendRequest("hot");
+    return this.sendRequest("hot");
+  }
 
-    return this.hotPosts;
+  getAllPosts(tag: string): Observable<string[]> {
+    return Observable.forkJoin(
+      this.getSubRedditPosts(tag),
+      this.getTaggedPosts(tag)
+    ).map(responses => {
+      return [].concat(...responses);
+    });
   }
 
   getSubRedditPosts(tag: string): Observable<string[]> {
     return this.sendRequest(`r/${tag}`);
+  }
+
+  getTaggedPosts(tag: string): Observable<string[]> {
+    return this.sendRequest(`t/${tag}`);
   }
 
   getPost(id: string): Observable<string[]> {
@@ -34,6 +43,10 @@ export class ImgurProvider {
 
   private extractData(res: Response) {
     let body = res['data'];
+
+    if(body.hasOwnProperty('items'))
+        body = body['items'];
+
     return body || { };
   }
 
