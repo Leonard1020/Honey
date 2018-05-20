@@ -20,8 +20,11 @@ export class HomePage {
     this.tag = navParams.get('tag');
     this.isHot = navParams.get('isHot');
 
-    if (!this.tag)
-      this.isHot = true;
+    //Set defaults for startup
+    if (!this.tag) {
+      this.tag = 'nsfw';
+      this.isHot = false;
+    }
   }
 
   ionViewDidLoad() {
@@ -32,7 +35,10 @@ export class HomePage {
     if (this.isHot) {
       this.imgur.getHotPosts()
         .subscribe(
-          posts => this.posts = posts,
+          posts => {
+            this.posts = posts;
+            console.log(posts);
+          },
           error =>  this.errorMessage = <any>error);
     }
     else {
@@ -57,6 +63,9 @@ export class HomePage {
       .subscribe(
         post => {
           let original = this.posts.find(p => p['id'] == id);
+          for (var i in original['images']) {
+            post['images'][i].requestLoad = original['images'][i].requestLoad;
+          }
           original['images'] = post['images'];
         },
         error => this.errorMessage = <any>error);

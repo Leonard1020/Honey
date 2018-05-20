@@ -9,7 +9,8 @@ import 'rxjs/add/operator/map';
 export class ImgurProvider {
 
   private headers : HttpHeaders;
-  private imgurUrl = 'https://api.imgur.com/3/gallery/';
+  //private imgurUrl = 'https://api.imgur.com/3/gallery/';
+  private imgurUrl = 'http://localhost:8100/imgur/';
 
   constructor(public http: HttpClient) {
     this.headers = new HttpHeaders();
@@ -38,16 +39,11 @@ export class ImgurProvider {
   }
 
   getPost(id: string): Observable<string[]> {
-    return this.sendRequest(id);
+    return this.sendRequest(`p/${id}`);
   }
 
   private extractData(res: Response) {
-    let body = res['data'];
-
-    if(body.hasOwnProperty('items'))
-        body = body['items'];
-
-    return body || { };
+    return res || { };
   }
 
   private handleError (error: Response | any) {

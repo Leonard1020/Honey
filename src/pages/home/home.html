@@ -3,7 +3,7 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Home</ion-title>
+    <ion-title>{{tag}}</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -18,20 +18,41 @@
       </ion-card-title>
 
       <div *ngFor="let i of p.images">
-        <div *ngIf="i.type.includes('image')">
-          <img padding-bottom src="{{i.link}}"/>
+        <div *ngIf="i.requestLoad">
+          <div *ngIf="i.type.includes('image')">
+            <img padding-bottom src="{{i.link}}"/>
+          </div>
+          <div *ngIf="i.type.includes('video')">
+            <video preload="auto" autoplay="autoplay" loop="loop" style='width: 100%;'>
+              <source src="{{i.link}}" type="{{i.type}}">
+            </video>
+          </div>
         </div>
-        <div *ngIf="i.type.includes('video')">
-          <video preload="auto" autoplay="autoplay" loop="loop" style='width: 100%;'>
-            <source src="{{i.link}}" type="{{i.type}}">
-          </video>
+        <div *ngIf="!i.requestLoad">
+          <button class='loadMoreButton' ion-button no-margin margin-bottom (click)="i.requestLoad = true">
+            Load {{i.type}} ({{i.size / 1000000 | number : '1.2-2' }} MB)
+          </button>
         </div>
-        <ion-label *ngIf="p.description" text-wrap padding-horizontal padding-bottom no-margin>
+        <ion-label *ngIf="i.description" text-wrap padding-horizontal padding-bottom no-margin>
           {{i.description}}
         </ion-label>
       </div>
       <div *ngIf="p.type && p.type.includes('image')">
-        <img padding-bottom src="{{p.link}}"/>
+        <div *ngIf="p.requestLoad">
+          <div *ngIf="p.type.includes('image')">
+            <img padding-bottom src="{{p.link}}"/>
+          </div>
+          <div *ngIf="p.type.includes('video')">
+            <video preload="auto" autoplay="autoplay" loop="loop" style='width: 100%;'>
+              <source src="{{p.link}}" type="{{p.type}}">
+            </video>
+          </div>
+        </div>
+        <div *ngIf="!p.requestLoad">
+          <button class='loadMoreButton' ion-button no-margin margin-bottom (click)="p.requestLoad = true">
+            Load {{p.type}} ({{p.size / 1000000 | number : '1.2-2' }} MB)
+          </button>
+        </div>
         <ion-label *ngIf="p.description" text-wrap padding-horizontal padding-bottom no-margin>
           {{p.description}}
         </ion-label>

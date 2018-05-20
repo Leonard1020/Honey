@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform } from 'ionic-angular';
+import { Nav, Platform, MenuController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
@@ -13,14 +13,16 @@ export class MyApp {
 
   rootPage: any = HomePage;
 
+  private newTag: string;
+
   private tags: string[];
   private selectedTag: string;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
+  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, public menuCtrl: MenuController) {
     this.initializeApp();
 
     this.tags = ['Hot', 'Science', 'DIY'];
-    this.selectedTag = this.tags[0];
+    this.selectedTag = "";
   }
 
   initializeApp() {
@@ -33,6 +35,18 @@ export class MyApp {
   }
 
   openPage(tag: string, index: number) {
+    //Already on Hot page
+    if (!this.selectedTag && tag == 'hot')
+      return;
+
+    //Load the hot posts (NOT 'hot' tags)
+    if (tag == 'hot' && index < 0) {
+      this.selectedTag = "";
+      this.nav.setRoot(this.rootPage, {tag: 'Hot', isHot: true});
+      return;
+    }
+
+    //Already on selected tag page
     if (this.selectedTag == tag &&
         this.selectedTag == this.tags[index])
       return;
@@ -40,6 +54,25 @@ export class MyApp {
     this.selectedTag = tag;
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario
-    this.nav.setRoot(this.rootPage, {tag: tag, isHot: index == 0});
+    this.nav.setRoot(this.rootPage, {tag: tag, isHot: false});
+  }
+
+  addNewTag() {
+    if (this.newTag) {
+      if (this.tags.indexOf(this.newTag) > -1)
+        return;
+
+      this.tags.push(this.newTag);
+      this.openPage(this.newTag, this.tags.length - 1);
+      this.menuCtrl.close();
+      this.newTag = "";
+    }
+  }
+
+  removeTag(tag: string) {
+    if (!tag)
+      return;
+
+    this.tags = this.tags.filter(t => t != tag);
   }
 }

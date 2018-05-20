@@ -1,15 +1,26 @@
 <ion-menu [content]="content">
   <ion-header>
     <ion-toolbar>
-      <ion-title>Menu</ion-title>
+      <button ion-button clear icon-only color="balanced" float-right (click)="addNewTag()">
+        <ion-icon name="add"></ion-icon>
+      </button>
+      <ion-title>
+        <ion-input (value)="newTag" [(ngModel)]="newTag" item-right placeholder="Tag"></ion-input>
+      </ion-title>
     </ion-toolbar>
   </ion-header>
 
   <ion-content>
     <ion-list>
-      <button menuClose ion-item *ngFor="let tag of tags; let i = index" (click)="openPage(tag, i)">
+      <ion-item menuClose (click)="openPage('hot', -1)">
+        Hot
+      </ion-item>
+      <ion-item menuClose *ngFor="let tag of tags; let i = index" (click)="openPage(tag, i)">
         {{tag}}
-      </button>
+        <button ion-button clear icon-only color="danger" item-end (click)="removeTag(tag)">
+          <ion-icon name="trash"></ion-icon>
+        </button>
+      </ion-item>
     </ion-list>
   </ion-content>
 
