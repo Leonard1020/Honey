@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { ImgurProvider } from '../../providers/rest/imgurRest';
 
+
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
@@ -22,8 +23,8 @@ export class HomePage {
 
     //Set defaults for startup
     if (!this.tag) {
-      this.tag = 'nsfw';
-      this.isHot = false;
+      this.tag = 'Hot';
+      this.isHot = true;
     }
   }
 
@@ -37,7 +38,6 @@ export class HomePage {
         .subscribe(
           posts => {
             this.posts = posts;
-            console.log(posts);
           },
           error =>  this.errorMessage = <any>error);
     }
@@ -45,8 +45,8 @@ export class HomePage {
       this.imgur.getAllPosts(this.tag)
         .subscribe(
           posts => {
-            posts.sort(this.sort)
-            this.posts = posts
+            posts.sort(this.sort);
+            this.posts = posts;
           },
           error => this.errorMessage = <any>error);
     }

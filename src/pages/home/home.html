@@ -20,7 +20,7 @@
       <div *ngFor="let i of p.images">
         <div *ngIf="i.requestLoad">
           <div *ngIf="i.type.includes('image')">
-            <img padding-bottom src="{{i.link}}"/>
+            <img padding-bottom src="{{i.link}}" imageViewer/>
           </div>
           <div *ngIf="i.type.includes('video')">
             <video preload="auto" autoplay="autoplay" loop="loop" style='width: 100%;'>
@@ -40,7 +40,7 @@
       <div *ngIf="p.type && p.type.includes('image')">
         <div *ngIf="p.requestLoad">
           <div *ngIf="p.type.includes('image')">
-            <img padding-bottom src="{{p.link}}"/>
+            <img padding-bottom src="{{p.link}}" imageViewer/>
           </div>
           <div *ngIf="p.type.includes('video')">
             <video preload="auto" autoplay="autoplay" loop="loop" style='width: 100%;'>

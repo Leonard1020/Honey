@@ -2,6 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform, MenuController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { Storage } from '@ionic/storage';
 
 import { HomePage } from '../pages/home/home';
 
@@ -18,10 +19,20 @@ export class MyApp {
   private tags: string[];
   private selectedTag: string;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, public menuCtrl: MenuController) {
+  constructor(
+      public platform: Platform,
+      public statusBar: StatusBar,
+      public splashScreen: SplashScreen,
+      public menuCtrl: MenuController,
+      public storage: Storage) {
     this.initializeApp();
 
-    this.tags = ['Hot', 'Science', 'DIY'];
+    this.storage.get('tags').then((value) => {
+      if (value)
+        this.tags = value;
+      else
+        this.tags = [];
+    });
     this.selectedTag = "";
   }
 
@@ -66,6 +77,7 @@ export class MyApp {
       this.openPage(this.newTag, this.tags.length - 1);
       this.menuCtrl.close();
       this.newTag = "";
+      this.storage.set('tags', this.tags);
     }
   }
 
@@ -74,5 +86,6 @@ export class MyApp {
       return;
 
     this.tags = this.tags.filter(t => t != tag);
+    this.storage.set('tags', this.tags);
   }
 }
