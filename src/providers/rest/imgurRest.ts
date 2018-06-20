@@ -11,8 +11,8 @@ export class ImgurProvider {
 
   private headers : HttpHeaders;
 
-  //private imgurUrl = 'http://localhost:8100/imgur/';
-  private imgurUrl = 'http://honeycompressor.ddns.net:5055/imgur/';
+  private remoteImgurUrl = 'http://honeycompressor.ddns.net:5055/imgur/';
+  private localImgurUrl = 'http://192.168.2.11:5055/imgur/';
 
   constructor(public http: HttpClient, private network: Network) {
     this.headers = new HttpHeaders();
@@ -60,11 +60,18 @@ export class ImgurProvider {
   }
 
   private sendRequest(path: string) {
-    let url = this.imgurUrl + path;
+    let url = this.remoteImgurUrl;
+
+    if (this.network.type == 'wifi')
+      url = this.localImgurUrl;
+
+    url += path;
 
     console.log(`Pulling from ${url}`);
 
-    return this.http.get(url, {headers: this.headers})
+    var headers = this.headers.set("Network", this.network.type || "");
+
+    return this.http.get(url, {headers: headers})
                     .map(this.extractData)
                     .catch(this.handleError);
   }
