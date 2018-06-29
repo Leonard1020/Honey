@@ -53,9 +53,7 @@ export class HomePage {
   }
 
   private sort(a: any, b: any) {
-    return (b.datetime > a.datetime)
-      ? 1
-      : ((a.datetime > b.datetime) ? -1 : 0);
+    return new Date(b.datetime) - new Date(a.datetime);
   }
 
   loadMoreImages(id: string) {
