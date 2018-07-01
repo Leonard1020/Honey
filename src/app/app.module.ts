@@ -4,6 +4,8 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { HttpClientModule } from '@angular/common/http';
 import { Network } from '@ionic-native/network';
 
+import { LazyLoadImageModule } from 'ng-lazyload-image';
+
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 
@@ -24,7 +26,8 @@ import { IonicStorageModule } from '@ionic/storage';
     HttpClientModule,
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot(),
-    IonicImageViewerModule
+    IonicImageViewerModule,
+    LazyLoadImageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

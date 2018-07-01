@@ -53,7 +53,7 @@ export class HomePage {
   }
 
   private sort(a: any, b: any) {
-    return new Date(b.datetime) - new Date(a.datetime);
+    return b.datetime - a.datetime;
   }
 
   loadMoreImages(id: string) {

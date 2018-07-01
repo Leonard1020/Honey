@@ -7,7 +7,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content #container>
   <ion-card *ngFor="let p of posts">
     <ion-card-content no-padding>
       <ion-card-title padding-horizontal padding-top>
@@ -20,7 +20,7 @@
       <div *ngFor="let i of p.images">
         <div *ngIf="i.requestLoad">
           <div *ngIf="i.type.includes('image')">
-            <img padding-bottom src="{{i.link}}" imageViewer/>
+            <img padding-bottom [lazyLoad]="i.link" [scrollObservable]="container.ionScroll" imageViewer/>
           </div>
           <div *ngIf="i.type.includes('video')">
             <video preload="auto" autoplay="autoplay" loop="loop" style='width: 100%;'>
@@ -40,7 +40,7 @@
       <div *ngIf="p.type && p.type.includes('image')">
         <div *ngIf="p.requestLoad">
           <div *ngIf="p.type.includes('image')">
-            <img padding-bottom src="{{p.link}}" imageViewer/>
+            <img padding-bottom [lazyLoad]="p.link" [scrollObservable]="container.ionScroll" imageViewer/>
           </div>
           <div *ngIf="p.type.includes('video')">
             <video preload="auto" autoplay="autoplay" loop="loop" style='width: 100%;'>
